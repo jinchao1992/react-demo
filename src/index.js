@@ -3,35 +3,41 @@ import ReactDOM from 'react-dom'
 import './css/style.css'
 
 
-const Cell = () => {
-  const [text, setText] = React.useState();
-  const buttonClick = () => {
-    setText('x')
-  }
+const Cell = (props) => {
   return (
-    <div className="cell" onClick={buttonClick}>
-      {text}
+    <div className="cell" onClick={props.onClick}>
+      {props.text}
     </div>
   )
 }
 
-const cells = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null]
-]
-
 const Chessboard = () => {
+  const [cells, setCells] = React.useState([
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+  ]);
+  const tell = () => {
+    console.log('tell')
+  };
+  const [n, setN] = React.useState(0);
+  const copyCells = JSON.parse(JSON.stringify(cells));
+  const onClickCell = (row, col) => {
+    setN(n + 1);
+    copyCells[row][col] = n % 2 === 0 ? 'X' : 'O';
+    setCells(copyCells)
+    tell();
+  }
   return (
     <div>
       {
-        cells.map((items, indexP) => {
+        cells.map((items, rowIndex) => {
           return (
-            <div className="row" key={indexP + 'p'}>
+            <div className="row" key={rowIndex + 'p'}>
               {
-                items.map((item, index)=> 
-                  <div className="col" key={index + 'a'}>
-                    <Cell />
+                items.map((item, colIndex) =>
+                  <div className="col" key={colIndex + 'a'}>
+                    <Cell text={item} onClick={() => onClickCell(rowIndex, colIndex)} />
                   </div>
                 )
               }
@@ -47,4 +53,4 @@ ReactDOM.render(
   <div>
     <Chessboard />
   </div>
-, document.querySelector('#root'))
+  , document.querySelector('#root'))
