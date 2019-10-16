@@ -14,4 +14,3 @@
 
 项目部署<br />
 ### `yarn build`
-查看更多请点击 [running tests](https://facebook.github.io/create-react-app/docs/running-tests)
