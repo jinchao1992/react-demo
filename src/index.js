@@ -17,8 +17,38 @@ const Chessboard = () => {
     [null, null, null],
     [null, null, null]
   ]);
-  const tell = () => {
-    console.log('tell')
+  const [bFlag, setBflag] = React.useState(false)
+  const tell = (cells) => {
+    console.log(cells)
+    // 判断横排 如果三个一样
+    for(let i = 0;  i < cells[0].length; i++) {
+      if (cells[i][0] === cells[i][1] 
+        && cells[i][1] === cells[i][2] 
+        && cells[i][0] !== null) {
+          setBflag(true)
+        }
+    }
+    // 判断竖排 如果三个一样
+    for (let i = 0; i < cells[0].length; i++) {
+      if(cells[0][i] === cells[1][i] 
+        && cells[1][i] === cells[2][i]
+        && cells[2][i] !== null
+      ) {
+        setBflag(true)
+      }
+    }
+    if ((cells[0][0] === cells[1][1] 
+      && cells[1][1] === cells[2][2]
+      && cells[1][1] !== null)
+    ) {
+      setBflag(true)     
+    }
+    if ((cells[0][2] === cells[1][1] 
+      && cells[1][1] === cells[2][0]
+      && cells[0][2] !== null)
+    ) {
+      setBflag(true)     
+    }
   };
   const [n, setN] = React.useState(0);
   const copyCells = JSON.parse(JSON.stringify(cells));
@@ -26,10 +56,10 @@ const Chessboard = () => {
     setN(n + 1);
     copyCells[row][col] = n % 2 === 0 ? 'X' : 'O';
     setCells(copyCells)
-    tell();
+    tell(copyCells);
   }
   return (
-    <div>
+    <div style={{'position': 'relative'}}>
       {
         cells.map((items, rowIndex) => {
           return (
@@ -45,6 +75,7 @@ const Chessboard = () => {
           )
         })
       }
+      {bFlag ? (<div className="grameover">游戏结束</div>) : null}
     </div>
   )
 }
